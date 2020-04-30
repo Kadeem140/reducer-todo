@@ -1,29 +1,39 @@
-import React, {useState} from 'react';
+import React, {useState, useReducer} from 'react';
+import { initialState, todoReducer } from '../reducers/reducer';
+import Todo from './Todo'
 
-
-
-export default function AddTodo( {dispatch} ){
-
-    const [task, setTask] = useState("")
+export default function AddTodoForm( props ){
+    const [task, setTask] = useState('');
 
     const handleChange = e => {
         setTask(e.target.value)
+    };
+    
+    // const addTodo = (task) => {
+    //     console.log("addTodo task",task)
+    //     props.dispatch({type: "ADD_ITEM" , payload:task });
+    // };
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        props.dispatch({type: "ADD_ITEM" , payload:task });
+        // addTodo(task);
+        setTask('');
     }
 
     return (
         <div>
-                <form onSubmit={e => e.preventDefault()}>
-                    <label> Add To Current Todo !</label>
+                <form onSubmit={handleSubmit}>
+                    <label> ADD NEW TODO!:</label>
                     <input  type="text"
                             placeholder="Todos"
                             value ={task}
                             onChange={handleChange} />
-
-                    <button onClick={() => {
-                        dispatch( {type: "ADD_ITEM" , payload: task } ) } }>
-                            Add another TODO!
+                    <button>
+                        Add Something!
                     </button>
                 </form>
+            <Todo todoItems={props.state.todoItems} />
         </div>
     )
 }
@@ -44,3 +54,4 @@ export default function AddTodo( {dispatch} ){
 //         </div>
 //     )
 // }
+
